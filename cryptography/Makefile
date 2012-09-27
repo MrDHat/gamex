@@ -1,5 +1,5 @@
 crypto : build/CaesarBox.o build/CryptographyModule.o
-	g++ -o crypto build/CaesarBox.o build/CryptographyModule.o 
+	g++ -o crypto build/CaesarBox.o build/CryptographyModule.o -lncurses 
 build/CaesarBox.o : CaesarBox.h CaesarBox.cpp
 	g++ -c  CaesarBox.cpp
 	mv *.o build
