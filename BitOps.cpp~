@@ -26,17 +26,13 @@ class BitOps
 
 int ones(int x)			// FUNCTION TO CALCULATE THE NUMBER OF ONEs IN BINARY REPRESENTATION OF X
 {
-	int c = 0 ;
-	if(!x)
+	int c = 0, r ;
+	while(x>=1)
 	{
-		return -1;
-	}
-	
-	while(x)
-	{
-		if(x & 1)
+		r = x % 2 ;
+		if(r==1)
 			c++ ;
-		x = x >> 1 ;
+		x /= 2 ;
 	}
 	return c ;
 }
