@@ -41,6 +41,23 @@ int ones(int x)			// FUNCTION TO CALCULATE THE NUMBER OF ONEs IN BINARY REPRESEN
 	return c ;
 }
 
+int zeros(int y){	//Counting the number of zeros in binary representation of y
+  int zeroCount = 0;
+  
+   if(!y){
+      return -1;
+   }
+  
+   while(y){
+    
+    if(!(y & 1))
+      zeroCount++;
+    y >>= 1;
+  }
+  return zeroCount;
+}
+
+
 int firstOne(int x)		// FUNCTION TO CALCULATE THE POSITION OF THE FIRST 1 FROM LSB IN BINARY REPRESENTATION OF X
 {
 	if(!x)
@@ -61,5 +78,16 @@ int firstOne(int x)		// FUNCTION TO CALCULATE THE POSITION OF THE FIRST 1 FROM L
 	pos++;
 	r=r>>1;
 	}
+}
+
+int nearPower(int x){	//
+  --x;
+  x=x|(x>>1);
+  x=x|(x>>2);
+  x=x|(x>>4);
+  x=x|(x>>8);
+  x=x|(x>>16);
+  ++x;
+  return x;
 }
 }
