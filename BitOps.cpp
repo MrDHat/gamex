@@ -1,5 +1,13 @@
 //sg
 #include<iostream>
+#include<ncurses.h>
+#include<cstring>
+#include<cctype>
+#include<cstdlib>
+#include<string>
+
+using namespace std ;
+
 class BitOps
 {
 /*this class should enclose the 
@@ -24,9 +32,11 @@ class BitOps
  * 	
  */ 
 
+public :
+
 int ones(int x)			// FUNCTION TO CALCULATE THE NUMBER OF ONEs IN BINARY REPRESENTATION OF X
 {
-	int c = 0 ;
+	int oneCount = 0 ;
 	if(!x)
 	{
 		return -1;
@@ -35,10 +45,10 @@ int ones(int x)			// FUNCTION TO CALCULATE THE NUMBER OF ONEs IN BINARY REPRESEN
 	while(x)
 	{
 		if(x & 1)
-			c++ ;
+			oneCount++ ;
 		x = x >> 1 ;
 	}
-	return c ;
+	return oneCount ;
 }
 
 int zeros(int y){	//Counting the number of zeros in binary representation of y
@@ -80,14 +90,120 @@ int firstOne(int x)		// FUNCTION TO CALCULATE THE POSITION OF THE FIRST 1 FROM L
 	}
 }
 
-int nearPower(int x){	//
+int nearPower(int x){	// Calculating nearest power of 2
   --x;
   x=x|(x>>1);
   x=x|(x>>2);
   x=x|(x>>4);
   x=x|(x>>8);
   x=x|(x>>16);
+//   x=x|(x>>32);
   ++x;
   return x;
 }
+
+
+int parser(char *temp){						// FUNCTION FOR PERFORMING THE PARSING OF THE INPUT
+    string msg(temp) ;
+    size_t brack1, brack2 ;
+    int num ;
+    
+    if(msg.find("ones")!=string::npos)				// CHECKING FOR ones FUNCTION
+    {
+      brack1 = msg.find("(") ;
+      brack2 = msg.find(")") ;
+      if(brack1!=string::npos || brack2!=string::npos)
+      {
+	num = atoi(msg.substr(brack1+1,brack2).c_str()) ;
+	return ones(num) ;
+      }
+      else
+	return -1 ;
+    }
+    
+    else if(msg.find("zeros")!=string::npos)			// CHECKING FOR zeros FUNCTION
+    {
+      brack1 = msg.find("(") ;
+      brack2 = msg.find(")") ;
+      if(brack1!=string::npos || brack2!=string::npos)
+      {
+	num = atoi(msg.substr(brack1+1,brack2).c_str()) ;
+	return zeros(num) ;
+      }
+      else
+	return -1 ;
+    }
+    
+    else if(msg.find("firstOne")!=string::npos)			// CHECKING FOR firstOne FUNCTION
+    {
+      brack1 = msg.find("(") ;
+      brack2 = msg.find(")") ;
+      if(brack1!=string::npos || brack2!=string::npos)
+      {
+	num = atoi(msg.substr(brack1+1,brack2).c_str()) ;
+	return firstOne(num) ;
+      }
+      else
+	return -1 ;
+    }
+    
+    else if(msg.find("nearPower")!=string::npos)			// CHECKING FOR nearPower FUNCTION
+    {
+      brack1 = msg.find("(") ;
+      brack2 = msg.find(")") ;
+      if(brack1!=string::npos || brack2!=string::npos)
+      {
+	num = atoi(msg.substr(brack1+1,brack2).c_str()) ;
+	return nearPower(num) ;
+      }
+      else
+	return -1 ;
+    }
+    
+    else return -1 ;							// INVALID INPUT
+  }
+};
+
+
+int main(){
+  
+  BitOps obj  ;
+  
+  int height, width, i = 0, status ;
+  char msg[20] ;
+//   string msg;
+  
+  initscr();
+  clear();
+  
+  
+  getmaxyx(stdscr,height, width);
+  start_color();
+  init_pair(1, COLOR_RED, COLOR_BLACK);
+  init_pair(2, COLOR_WHITE, COLOR_BLACK);
+    
+//    box(stdscr, 0, 0) ;
+//   while(1){
+    
+    attron(COLOR_PAIR(1)|A_BOLD);
+    mvprintw(i, 0,"[gamex] $ ");
+    attroff(COLOR_PAIR(1));
+    getstr(msg);
+    status = obj.parser(msg) ;
+    if(status!=-1)
+      mvprintw(++i, 0, "%d", status) ;
+    else
+      mvprintw(++i, 0, "Invalid Input!") ;
+    
+//   }
+  
+  refresh();
+  getch();
+  clear();
+
+  endwin();
+  
+  return 0;
+  
+  
 }
