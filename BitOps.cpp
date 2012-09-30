@@ -133,8 +133,7 @@ int nearPower(int x){	// Calculating nearest power of 2
 // -2 => help
 // -3 => exit
 
-int parser(char *temp){						// FUNCTION FOR PARSING THE INPUT
-    string msg(temp) ;
+int parser(string msg){						// FUNCTION FOR PARSING THE INPUT
     size_t brack1, brack2, length_of_msg ;
     int num ;
     
@@ -230,7 +229,7 @@ int main(){
   BitOps obj  ;
   
   int height, width, i = 0, status ;
-  char msg[20], ch ;
+  char temp[20], ch ;
   
   initWin(height, width);
     
@@ -239,10 +238,18 @@ int main(){
     attron(COLOR_PAIR(1)|A_BOLD);
     mvprintw(i, 0,"[gamex] $ ");
     attroff(COLOR_PAIR(1));
-    getstr(msg);
-    
-    if(strcmp(msg,"\n") == 0){				// Check for Enter Key
-    }  
+    getstr(temp);
+    string msg(temp) ;
+        
+    if(msg.empty()){			// Check for Enter Key
+	i++ ;
+	if(i == LINES + 1|| i == LINES - 1 || i == LINES + 2 || i == LINES - 2){
+	i = 0;
+	refresh();
+	clear(); 
+	}
+	continue ;
+   }  
     else{
 	status = obj.parser(msg) ;
       if(status!=-1){
@@ -259,7 +266,7 @@ int main(){
 	mvprintw(++i, 0, "Invalid Input!") ;  
     }
     ++i;
-   if(i == LINES + 1|| i == LINES - 1 || i == LINES + 2){
+   if(i == LINES + 1|| i == LINES - 1 || i == LINES + 2 || i == LINES - 2){
       i = 0;
       refresh();
       clear(); 
