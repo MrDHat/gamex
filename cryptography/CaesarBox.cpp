@@ -130,7 +130,7 @@ attron(COLOR_PAIR(1));
 while((5-attempts)>=0)
 {
 getmaxyx(stdscr,row,col);
-mvprintw(row/4,(col-strlen(mesg))/3,"%s",mesg);
+mvprintw(row/4,(col-strlen(mesg)+)/3,"%s",mesg);
 getstr(str);
 
 if(!strcmp(str,message))

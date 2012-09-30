@@ -7,10 +7,6 @@
 #include<string>
 
 using namespace std ;
-
-
-
-
 class BitOps
 {
 /*this class should enclose the 
@@ -51,11 +47,11 @@ unsigned long int Xor(unsigned long int x, unsigned long int y){
  
 char * Not(char *x){
   int i;
-  for(i = 0;x[i]!='\0';i++){
-    if(x[i]==1)
-      x[i] = 0;
-    else if(x[i] == 0)
-      x[i] = 1;
+  for(i = 0;x[i];i++){
+    if(x[i]=='1')
+      x[i] = '0';
+    else if(x[i] == '0')
+      x[i] = '1';
   }
   return x ;
 }
@@ -64,7 +60,7 @@ char * Not(char *x){
 
 char * decimalToBin(unsigned long int decimal)
 {
-	int bit = 32 ;
+	int bit = 8 ;
 	char *res=(char *)malloc(sizeof(char)*(bit+1));
 	int i=0;
 	unsigned long int mask=1<<(bit-1);
@@ -87,7 +83,7 @@ char * decimalToBin(unsigned long int decimal)
 
 unsigned long int binToDec(char * bin)
 {
-  int bit = 32 ;
+  int bit = 8 ;
   unsigned long int power=1<<(bit-1);
   unsigned long int res=0;
   int i=0;
@@ -167,7 +163,8 @@ int firstOne(int x)		// FUNCTION TO CALCULATE THE POSITION OF THE FIRST 1 FROM L
 	}
 }
 
-int nearPower(int x){	// Calculating nearest power of 2
+int nearPower(int x){	
+	// Calculating nearest power of 2 for 32 bit numbers
   --x;
   x=x|(x>>1);
   x=x|(x>>2);
@@ -232,7 +229,7 @@ int parser(string msg){						// FUNCTION FOR PARSING THE INPUT
       if(3 + brack2 - brack1 + 1 != length_of_msg)		// Checking the length of Input
 	return -1 ;
       
-      if(brack1!=string::npos || brack2!=string::npos){
+      if(brack1!=string::npos && brack2!=string::npos){
 	a = atoi(msg.substr(brack1+1,comma).c_str());
 	b = atoi(msg.substr(comma+1,brack2).c_str());
 	return Xor(a,b);
@@ -245,13 +242,12 @@ int parser(string msg){						// FUNCTION FOR PARSING THE INPUT
     if(msg.find("Not")!=string::npos){
       brack1 = msg.find("(") ;
       brack2 = msg.find(")") ;
-      
       if(3 + brack2 - brack1 + 1 != length_of_msg)		// Checking the length of Input
-	return -1 ;
-      
+	  return -1 ;
       if(brack1!=string::npos || brack2!=string::npos){
 	a = atoi(msg.substr(brack1+1,brack2).c_str());
 	temp = decimalToBin(a);
+	
 	temp = Not(temp);
 	return binToDec(temp);
       }
@@ -358,14 +354,14 @@ int main(){
   char temp[20], ch ;
   
   initWin(height, width);
-    
+   string msg(""); 
   while(1){
     
     attron(COLOR_PAIR(1)|A_BOLD);
     mvprintw(i, 0,"[gamex] $ ");
     attroff(COLOR_PAIR(1));
     getstr(temp);
-    string msg(temp) ;
+    msg=temp ;
         
     if(msg.empty()){			// Check for Enter Key
 	i++ ;
