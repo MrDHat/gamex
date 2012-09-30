@@ -9,8 +9,7 @@
 using namespace std ;
 
 
-// Giving Invalid Input when " " 
-// And,Or,not,XOR left
+
 
 class BitOps
 {
@@ -38,20 +37,70 @@ class BitOps
 
 public :
 
-int And(int x, int y){
+unsigned long int And(unsigned long int x, unsigned long int y){
   return x & y;
 }
  
-int Or(int x, int y){
+unsigned long int Or(unsigned long int x, unsigned long int y){
   return x | y;
 }
  
-int Xor(int x, int y){
+unsigned long int Xor(unsigned long int x, unsigned long int y){
   return x ^ y;
 }
  
-int Not(int x){
-  return !x ;
+char * Not(char *x){
+  int i;
+  for(i = 0;x[i]!='\0';i++){
+    if(x[i]==1)
+      x[i] = 0;
+    else if(x[i] == 0)
+      x[i] = 1;
+  }
+  return x ;
+}
+
+
+
+char * decimalToBin(unsigned long int decimal)
+{
+	int bit = 32 ;
+	char *res=(char *)malloc(sizeof(char)*(bit+1));
+	int i=0;
+	unsigned long int mask=1<<(bit-1);
+	while(i<bit)
+	{
+	if(decimal&mask)
+	{
+		res[i]='1';
+	}
+	else
+	{
+		res[i]='0';
+	}
+	i++;
+	mask=mask>>1;
+	}
+	res[i]='\0';
+	return res;
+}
+
+unsigned long int binToDec(char * bin)
+{
+  int bit = 32 ;
+  unsigned long int power=1<<(bit-1);
+  unsigned long int res=0;
+  int i=0;
+  while(i<bit)
+  {
+	if(bin[i]=='1')
+	{
+		res+=power;
+	}
+	power=power>>1;
+	i++;
+  }	
+  return res;
 }
 
 
@@ -131,13 +180,84 @@ int nearPower(int x){	// Calculating nearest power of 2
 
 // -1 => Invalid Input
 // -2 => help
-// -3 => exit
 
 int parser(string msg){						// FUNCTION FOR PARSING THE INPUT
-    size_t brack1, brack2, length_of_msg ;
+    size_t brack1, brack2, length_of_msg, comma ;
     int num ;
+    unsigned long int a,b ;
+    char *temp; 
     
     length_of_msg = msg.length();
+    
+    
+    if(msg.find("And")!=string::npos){
+      brack1 = msg.find("(") ;
+      brack2 = msg.find(")") ;
+      comma = msg.find(",");
+      
+      if(3 + brack2 - brack1 + 1 != length_of_msg)		// Checking the length of Input
+	return -1 ;
+      
+      if(brack1!=string::npos || brack2!=string::npos){
+	a = atoi(msg.substr(brack1+1,comma).c_str());
+	b = atoi(msg.substr(comma+1,brack2).c_str());
+	return And(a,b);
+      }
+      
+    }
+    
+    
+    if(msg.find("Or")!=string::npos){
+      brack1 = msg.find("(") ;
+      brack2 = msg.find(")") ;
+      comma = msg.find(",");
+      
+      if(2 + brack2 - brack1 + 1 != length_of_msg)		// Checking the length of Input
+	return -1 ;
+      
+      if(brack1!=string::npos || brack2!=string::npos){
+	a = atoi(msg.substr(brack1+1,comma).c_str());
+	b = atoi(msg.substr(comma+1,brack2).c_str());
+	return Or(a,b);
+      }
+      
+    }
+    
+    
+    if(msg.find("Xor")!=string::npos){
+      brack1 = msg.find("(") ;
+      brack2 = msg.find(")") ;
+      comma = msg.find(",");
+      
+      if(3 + brack2 - brack1 + 1 != length_of_msg)		// Checking the length of Input
+	return -1 ;
+      
+      if(brack1!=string::npos || brack2!=string::npos){
+	a = atoi(msg.substr(brack1+1,comma).c_str());
+	b = atoi(msg.substr(comma+1,brack2).c_str());
+	return Xor(a,b);
+      }
+      
+    }
+    
+    
+    
+    if(msg.find("Not")!=string::npos){
+      brack1 = msg.find("(") ;
+      brack2 = msg.find(")") ;
+      
+      if(3 + brack2 - brack1 + 1 != length_of_msg)		// Checking the length of Input
+	return -1 ;
+      
+      if(brack1!=string::npos || brack2!=string::npos){
+	a = atoi(msg.substr(brack1+1,brack2).c_str());
+	temp = decimalToBin(a);
+	temp = Not(temp);
+	return binToDec(temp);
+      }
+      
+    }
+    
     
     if(msg.find("ones")!=string::npos)				// CHECKING FOR ones FUNCTION
     {
@@ -162,6 +282,8 @@ int parser(string msg){						// FUNCTION FOR PARSING THE INPUT
       brack1 = msg.find("(") ;
       brack2 = msg.find(")") ;
       
+      if(5 + brack2 - brack1 + 1 != length_of_msg)		// Checking the length of Input
+	return -1 ;
       
       if(brack1!=string::npos || brack2!=string::npos)
       {
@@ -177,6 +299,8 @@ int parser(string msg){						// FUNCTION FOR PARSING THE INPUT
       brack1 = msg.find("(") ;
       brack2 = msg.find(")") ;
       
+      if(8 + brack2 - brack1 + 1 != length_of_msg)		// Checking the length of Input
+	return -1 ;
    
       if(brack1!=string::npos || brack2!=string::npos)
       {
@@ -192,6 +316,8 @@ int parser(string msg){						// FUNCTION FOR PARSING THE INPUT
       brack1 = msg.find("(") ;
       brack2 = msg.find(")") ;
       
+      if(9 + brack2 - brack1 + 1 != length_of_msg)		// Checking the length of Input
+	return -1 ;
       
       if(brack1!=string::npos || brack2!=string::npos)
       {
@@ -254,6 +380,10 @@ int main(){
 	status = obj.parser(msg) ;
       if(status!=-1){
 	if(status == -2){				// Help Detected
+	  mvprintw(++i, 0, "And(x,y):  Prints x & y") ;
+	  mvprintw(++i, 0, "Or(x,y): Prints x|y ") ;
+	  mvprintw(++i, 0, "Not(x):  Prints !x ") ;
+	  mvprintw(++i, 0, "Xor(x,y):  Prints x^y") ;
 	  mvprintw(++i, 0, "ones(x): Prints the number of ones in binary representation of x") ;
 	  mvprintw(++i, 0, "zeros(x): Prints the number of zeroes in binary representation of x") ;
 	  mvprintw(++i, 0, "nearPower(x) : prints the nearest power of 2 closest to x") ;
