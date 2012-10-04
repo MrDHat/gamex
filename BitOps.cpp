@@ -352,7 +352,7 @@ int main(){
   
   int height, width, i = 0, status ;
   char temp[20], ch ;
-  
+  string buffer("");;
   initWin(height, width);
    string msg(""); 
   while(1){
@@ -361,8 +361,8 @@ int main(){
     mvprintw(i, 0,"[gamex] $ ");
     attroff(COLOR_PAIR(1));
     getstr(temp);
-    msg=temp ;
-        
+    msg.assign(temp) ;
+    
     if(msg.empty()){			// Check for Enter Key
 	i++ ;
 	if(i == LINES + 1|| i == LINES - 1 || i == LINES + 2 || i == LINES - 2){

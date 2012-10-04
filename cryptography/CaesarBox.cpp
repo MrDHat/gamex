@@ -116,7 +116,7 @@ getch();
 endwin();
 }
 void CaesarBox::waitForInput()
-{
+{	
 char mesg[]="The Code Says :  ";
 char str[80];
 int row,col;
@@ -132,11 +132,10 @@ while((5-attempts)>=0)
 getmaxyx(stdscr,row,col);
 mvprintw(row/4,(col-strlen(mesg)+)/3,"%s",mesg);
 getstr(str);
-
 if(!strcmp(str,message))
 {
 mvprintw(LINES - 15, 0, "You got it right!  Score : %d", (score/attempts));
-
+	
 break;
 }
 else
