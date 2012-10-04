@@ -351,17 +351,47 @@ int main(){
   BitOps obj  ;
   
   int height, width, i = 0, status ;
-  char temp[20], ch ;
+  char temp[20];
+  int c = 0, cursx, cursy  ;
   
   initWin(height, width);
    string msg(""); 
+   keypad(stdscr, TRUE);
   while(1){
     
     attron(COLOR_PAIR(1)|A_BOLD);
     mvprintw(i, 0,"[gamex] $ ");
     attroff(COLOR_PAIR(1));
-    getstr(temp);
-    msg=temp ;
+    msg = "";
+    
+    c = wgetch(stdscr) ;
+    
+    while(c!=10)
+    {
+      if((c>=65 && c<=90) || (c>=97 && c<=122) || c == 40 || c == 41 || (c>=48 && c<=57))
+      {
+	msg.push_back(c) ;
+      }
+      
+      else if(c == KEY_LEFT)
+      {
+	getyx(stdscr, cursy, cursx) ;
+	if(cursx >= 11)
+	  move(cursy, cursx-1) ;
+      }
+      
+      else if(c == KEY_RIGHT)
+      {
+	getyx(stdscr, cursy, cursx) ;
+	if(cursx <= 13 + msg.length())
+	  move(cursy, cursx+1) ;
+      }
+      
+      c = wgetch(stdscr) ;
+    }
+        
+    /*  getstr(temp);
+    msg=temp ;*/
         
     if(msg.empty()){			// Check for Enter Key
 	i++ ;
